@@ -54,6 +54,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.Dimension;
 
 /**
  * @author Diego Barrientos <dc_barrientos@yahoo.com.ar>
@@ -82,12 +83,11 @@ public class SplitPane extends JPanel{
 	private File input;
 	private int cantidadArchivos;
 	private Splitter task;
-	private long splittedFileSize;
+	private long splitFileSize;
 	String destFolder;
 	
 	private JPanel panel;
 	private JLabel lblFilesProgress;
-	//private JLabel lblTotalProgress;
 	private JProgressBar pbTotalProgress;
 	private JCheckBox chckbxCreateBatchFile;
 	private ResourceBundle resource;
@@ -107,6 +107,7 @@ public class SplitPane extends JPanel{
 	 * Inicializa la interfaz gráfica.
 	 */
 	private void initComponents(){
+		setMinimumSize(new Dimension(412, 240));
 		
 		
 		lblInputFile = new JLabel(resource.getString("SplitPane.lblInputFile"));
@@ -207,8 +208,8 @@ public class SplitPane extends JPanel{
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblOutputFile)
 								.addComponent(lblSize)
@@ -221,15 +222,15 @@ public class SplitPane extends JPanel{
 									.addComponent(cbUnidad, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 								.addGroup(groupLayout.createSequentialGroup()
 									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-										.addComponent(txtOutput, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
-										.addComponent(txtInputFile, GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE))
+										.addComponent(txtOutput, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+										.addComponent(txtInputFile, GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE))
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 										.addComponent(btnSearchOutput)
 										.addComponent(btnSearchInput)))))
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(chckbxCreateBatchFile)
-							.addPreferredGap(ComponentPlacement.RELATED, 152, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 250, Short.MAX_VALUE)
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(lblInputFileSize)
@@ -239,8 +240,8 @@ public class SplitPane extends JPanel{
 									.addComponent(lblPossibleNumberOf)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(lblCantidadArchivos))))
-						.addComponent(panel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(btnSplit)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnCancel)))
@@ -277,13 +278,13 @@ public class SplitPane extends JPanel{
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(11)
 							.addComponent(chckbxCreateBatchFile)))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGap(7)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnCancel)
-						.addComponent(btnSplit))
-					.addContainerGap(45, Short.MAX_VALUE))
+						.addComponent(btnCancel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnSplit, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGap(12))
 		);
 		
 		lblFilesProgress = new JLabel(resource.getString("SplitPane.lblFilesProgress"));
@@ -348,7 +349,7 @@ public class SplitPane extends JPanel{
 		if(txtInputFile.getText().length() > 0 && txtDividerSize.getText().length() > 0){
 			cantidadArchivos = Constantes.fileSizeDivider(input.length(), Constantes.BYTES, Long.parseLong(txtDividerSize.getText()), cbUnidad.getSelectedIndex()); 
 			lblCantidadArchivos.setText(Integer.toString(cantidadArchivos, 10));
-			splittedFileSize = Long.parseLong(txtDividerSize.getText());
+			splitFileSize = Long.parseLong(txtDividerSize.getText());
 			
 			actualizarFileProgress();
 		}
@@ -382,7 +383,7 @@ public class SplitPane extends JPanel{
 				actualizarFileProgress();
 			
 				destFolder = txtOutput.getText().endsWith(File.separator)?txtOutput.getText():txtOutput.getText()+File.separator;
-				task = new Splitter(input, Constantes.toBytes(splittedFileSize, cbUnidad.getSelectedIndex()), pbTotalProgress, destFolder);
+				task = new Splitter(input, Constantes.toBytes(splitFileSize, cbUnidad.getSelectedIndex()), pbTotalProgress, destFolder);
 	
 				task.execute();
 				btnCancel.setEnabled(true);

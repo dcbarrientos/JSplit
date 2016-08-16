@@ -1,7 +1,7 @@
 # JSplit 1.0
 
 ## Synopsys
-JSplit splits any file of any type. Platforms: Windows, Linux.
+JSplit splits any file of any type. Also can join split files. Platforms: Windows, Linux.
 
 ## Installation
 This program doesn't need installation.

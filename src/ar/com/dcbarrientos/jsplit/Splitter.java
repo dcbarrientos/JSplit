@@ -43,12 +43,12 @@ import javax.swing.SwingWorker;
 public class Splitter extends SwingWorker<Long, Long>{
 	
 	private File input;						//Archivo para dividir
-	private long splittedFileSize;			//Tamaño al que hay que dividirlo
+	private long splitFileSize;				//Tamaño al que hay que dividirlo
 	private JProgressBar totalProgressBar;	//Progreso total del proceso.
 	private boolean isCanceled;				//Verifica si se cancela el proceso.
 	private int cantidadArchivos;			//LLeva la cuenta de los archvos generados.
-	private Vector<String> listaArchivos;		//Lista de archivos generados.
-	private String destFolder;					//Carpeta destino.
+	private Vector<String> listaArchivos;	//Lista de archivos generados.
+	private String destFolder;				//Carpeta destino.
 	private boolean running;
 	
 	/**
@@ -60,7 +60,7 @@ public class Splitter extends SwingWorker<Long, Long>{
 	 */
 	public Splitter(File input, long splittedFileSize, JProgressBar totalProgressBar, String destFolder){
 		this.input = input; 
-		this.splittedFileSize = splittedFileSize;
+		this.splitFileSize = splittedFileSize;
 		this.totalProgressBar = totalProgressBar;
 		this.destFolder = destFolder;
 		this.running = false;
@@ -78,7 +78,7 @@ public class Splitter extends SwingWorker<Long, Long>{
 		long leidoTotal = 0;	//Leido del archivo total
 		int leidoParcial = 0;	//lleva la cuenta de bytes leidos, vuelve a 0 cuando se llega al max por archivo.
 		cantidadArchivos = 0; 
-		long maxFileProgressBar = splittedFileSize;
+		long maxFileProgressBar = splitFileSize;
 		listaArchivos = new Vector<String>();
 		running = true;
 		
@@ -99,13 +99,13 @@ public class Splitter extends SwingWorker<Long, Long>{
 			publish(leidoTotal * 100 / input.length());			//Primer valor en la lista es para el total
 			publish(leidoParcial * 100 / maxFileProgressBar);		//Segudo valor en la lista es para el parcial.
 			
-			if(leidoParcial >= splittedFileSize){
+			if(leidoParcial >= splitFileSize){
 				leidoParcial = 0;
 				out.close();
 				cantidadArchivos++;
 				out = new FileOutputStream(fileName + format.format(cantidadArchivos+1));
 				listaArchivos.add(input.getName() + "." + format.format(cantidadArchivos+1));
-				if(input.length() - leidoTotal < splittedFileSize)
+				if(input.length() - leidoTotal < splitFileSize)
 					maxFileProgressBar = input.length() - leidoTotal;
 			}
 		}

@@ -45,6 +45,7 @@ public class Principal extends JFrame{
 
 	private JTabbedPane tabbedPane;
 	private SplitPane jSplitPane;
+	private JoinPane joinPane;
 	
 	
 	/**
@@ -65,12 +66,16 @@ public class Principal extends JFrame{
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
 		jSplitPane = new SplitPane(this, resource);		
-		tabbedPane.addTab(resource.getString("Principal.TabSplit.title"), null, jSplitPane, null);
+		tabbedPane.addTab(resource.getString("SplitPane.title"), null, jSplitPane, null);
+		
+		joinPane = new JoinPane(this, resource);
+		tabbedPane.addTab(resource.getString("JoinPane.title"), null, joinPane, null);
 		
 		setTitle(getVersion());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-
+		setResizable(false);
+		
 		pack();
 	}
 	
