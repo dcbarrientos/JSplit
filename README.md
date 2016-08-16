@@ -7,7 +7,7 @@ JSplit splits any file of any type. Also can join split files. Platforms: Window
 This program doesn't need installation.
 
 ## Requirements
-* Java 1.6 or newer. 
+* Java 1.6 or higher. 
 
 ## License
 This program is free software; you can redistribute it and/or modify it 
